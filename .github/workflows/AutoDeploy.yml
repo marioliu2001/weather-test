@@ -1,0 +1,58 @@
+# workflow的名称
+name: 前端自动化部署
+
+# 定义触发事件当有push事件发生时触发工作流
+on:
+  push:
+    # 触发条件为分支为master的push事件
+    branches:
+      - master
+permissions:
+  contents: write  # 权限部分，设置为对内容具有写权限
+
+jobs:
+  # 定义一个名为deploy的工作流程
+  deploy:
+    # 在ubuntu-latest上运行该工作流程
+    runs-on: ubuntu-latest
+    steps:
+      # 步骤1：使用checkout action获取代码
+      - name: 使用checkout action获取代码
+        uses: actions/checkout@v4
+
+      # 步骤2：使用node action安装node
+      - name: 安装node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      # 步骤3：使用npm action安装依赖
+      - name: 安装依赖
+        run: npm install
+
+      # 步骤4：使用npm action打包代码
+      - name: 打包代码
+        run: npm run build
+
+      # 步骤5：部署到github pages
+      - name: 部署到github pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages # 默认值
+          folder: dist
+
+
+#      # 步骤5：使用ssh action连接服务器
+#      - name: 连接服务器
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.HOST }}
+#          username: ${{ secrets.USERNAME }}
+#          password: ${{ secrets.PASSWORD }}
+#          port: 22
+#          script: |
+#            cd /home/www/wwwroot/
+#            git pull
+#            npm install
+#            npm run build
+#            pm2 restart www

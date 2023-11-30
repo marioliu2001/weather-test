@@ -16,4 +16,6 @@ app.config.globalProperties.$echarts = echarts
 setupStore(app)
 app.use(router)
 
+console.log(import.meta.env.BASE_URL)
+
 app.mount('#app')
