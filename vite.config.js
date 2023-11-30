@@ -5,6 +5,8 @@ import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+const INVALID_CHAR_REGEX = /[\u0000-\u001F"#$&*+,:;<=>?[\]^`{|}\u007F]/g
+const DRIVE_LETTER_REGEX = /^[a-z]:/i
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -63,20 +65,14 @@ export default defineConfig({
     chunkSizeWarningLimit: 2000,
     rollupOptions: {
       output: {
-        // js最小拆包
-        // manualChunks (id) {
-        //   if (id.includes('node_modules')) {
-        //     return id.toString().split('node_modules/')[1].split('/')[1].toString()
-        //   }
-        // },
-        // 自定义打包配置
-        manualChunks: (id) => {
-          if (id.includes('node_modules')) {
-            return 'vendor' // 将所有来自 node_modules 的模块打包到 vendor chunk
-          }
-        },
         // 处理GitHub Pages 部署 下划线开头的js文件加载失败
-
+        sanitizeFileName(name) {
+          const match = DRIVE_LETTER_REGEX.exec(name)
+          const driveLetter = match ? match[0] : ''
+          // A `:` is only allowed as part of a windows drive letter (ex: C:\foo)
+          // Otherwise, avoid them because they can refer to NTFS alternate data streams.
+          return driveLetter + name.slice(driveLetter.length).replace(INVALID_CHAR_REGEX, '')
+        },
         // 静态资源分类和包装
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
