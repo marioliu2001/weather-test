@@ -1,0 +1,5 @@
+import{_ as e}from"./_plugin-vue_export-helper-1b428a4d.js";import{o as t,a as n,B as i,C as a,D as s}from"./vendor-e9f0ad06.js";const d={data:()=>({}),methods:{
+// 基本柱形图
+change(){const e=this.$echarts.init(document.getElementById("main"));e.setOption({xAxis:{data:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]},yAxis:{},series:[{type:"bar",data:[23,24,18,25,27,28,25]}]}),window.addEventListener("resize",(function(){e.resize()}))},
+// 折线图
+changeType(){const e=this.$echarts.init(document.getElementById("lineChart"));e.setOption({xAxis:{data:["A","B","C","D","E"]},yAxis:{},series:[{data:[10,22,28,43,49],type:"line",stack:"x"},{data:[5,4,3,5,10],type:"line",stack:"x"}]}),window.addEventListener("resize",(function(){e.resize()}))}},mounted(){this.change(),this.changeType()}},r=e=>(i("data-v-d08c4e9d"),e=e(),a(),e),o=[r((()=>s("div",{id:"main"},null,-1))),r((()=>s("div",{id:"lineChart"},null,-1)))];const c=e(d,[["render",function(e,i,a,s,d,r){return t(),n("div",null,o)}],["__scopeId","data-v-d08c4e9d"]]);export{c as default};
