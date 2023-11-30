@@ -1,1 +1,0 @@
-import{_ as r}from"./_plugin-vue_export-helper-1b428a4d.js";import{o as e,a as o}from"./vendor-e9f0ad06.js";const s={class:"picture"};const t=r({},[["render",function(r,t){return e(),o("div",s,"照片墙")}]]);export{t as default};
